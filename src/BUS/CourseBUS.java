@@ -6,7 +6,8 @@ import BLL.Course;
 import java.util.ArrayList;
 
 public class CourseBUS {
-    public static ArrayList<Course> list = new ArrayList<>();    
+    public static ArrayList<Course> list = new ArrayList<>();      
+
     public CourseBUS(){}
     public ArrayList<Course> docCourse(){
         CourseDAL data = new CourseDAL();
