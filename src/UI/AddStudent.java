@@ -2,18 +2,20 @@ package UI;
 
 import BLL.Student;
 import BUS.StudentBUS;
+import com.toedter.calendar.JDateChooser;
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.awt.event.*;
+import java.text.SimpleDateFormat;
 
 public class AddStudent extends JFrame implements ActionListener{
     StudentBUS bus = new StudentBUS();
     
     JTextField fname, lname;
     JTextField txtmmasv;
-    JTextField dcdob, dcEnrol;
     JButton submit, cancel;
+    JDateChooser hiredate,dcEnrol;
     
     Random ran = new Random();
     long first4 = Math.abs((ran.nextLong() % 9000L) + 1000L);
@@ -21,16 +23,6 @@ public class AddStudent extends JFrame implements ActionListener{
     
     private void initData(){
         txtmmasv.setEditable(false);
-    }
-    
-    public Student getText() {
-        Student sv = new Student();
-        sv.setMasv(txtmmasv.getText().trim());
-        sv.setLastname(lname.getText().trim());
-        sv.setFirstname(fname.getText().trim());
-        sv.setHireDate(dcEnrol.getText().trim());
-        sv.setEnrollmentDate(dcEnrol.getText().trim());
-        return sv;
     }
     
     private Vector setVector(Student sv){
@@ -88,17 +80,17 @@ public class AddStudent extends JFrame implements ActionListener{
         lbldob.setFont(new Font("serif", Font.BOLD, 20));
         add(lbldob);
         
-        dcdob = new JTextField();
-        dcdob.setBounds(600, 200, 150, 30);
-        dcdob.setFont(new Font("serif", Font.BOLD, 20));
-        add(dcdob);
+        hiredate = new JDateChooser();
+        hiredate.setBounds(600, 200, 150, 30);
+        hiredate.setFont(new Font("serif", Font.BOLD, 20));
+        add(hiredate);
         
         JLabel lbladdress = new JLabel("EnrollmentDate");
         lbladdress.setBounds(50, 250, 200, 30);
         lbladdress.setFont(new Font("serif", Font.BOLD, 20));
         add(lbladdress);
         
-        dcEnrol = new JTextField();
+        dcEnrol = new JDateChooser();
         dcEnrol.setBounds(200, 250, 150, 30);
         dcEnrol.setFont(new Font("serif", Font.BOLD, 20));
         add(dcEnrol);
@@ -125,9 +117,19 @@ public class AddStudent extends JFrame implements ActionListener{
     
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == submit) {
-            Student kh = getText();
-            Vector head = setVector(kh);
-            int check = bus.themSV(kh);
+            Date selectedDate = hiredate.getDate();
+            Date selecteddcEnrol = dcEnrol.getDate();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            String dateHire = dateFormat.format(selectedDate);
+            String dc = dateFormat.format(selectedDate);
+            Student sv = new Student();
+            sv.setMasv(txtmmasv.getText().trim());
+            sv.setLastname(lname.getText().trim());
+            sv.setFirstname(fname.getText().trim());
+            sv.setHireDate(dateHire.trim());
+            sv.setEnrollmentDate(dc.trim());
+            Vector head = setVector(sv);
+            int check = bus.themSV(sv);
             if(check == 1){ 
                 JOptionPane.showMessageDialog(null, "Thêm thành công");
                 setVisible(false);

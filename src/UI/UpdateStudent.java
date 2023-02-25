@@ -1,23 +1,38 @@
 package UI;
 
+import BLL.Student;
+import BUS.StudentBUS;
 import com.toedter.calendar.JDateChooser;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
+import javax.swing.table.DefaultTableModel;
 
 public class UpdateStudent extends JFrame implements ActionListener{
     
-    JTextField txtname,txtfname;
+    StudentBUS bus = new StudentBUS();
+    DefaultTableModel model = new DefaultTableModel();
+    
+    JTextField txtname,txtfname,crollno;
     JLabel labelrollno;
     JButton submit, cancel;
-    Choice crollno;
     JDateChooser Hire, Enroll;
+    JTable table;
+    
+            public void setModelValue(Student student, int i) {
+                    model.setValueAt(student.getMasv(), i, 0);
+                    model.setValueAt(student.getLastname(), i, 1);
+                    model.setValueAt(student.getFirstname(), i, 2);
+                    model.setValueAt(student.getHireDate(), i, 3);
+                    model.setValueAt(student.getEnrollmentDate(), i, 4);
+                    table.setModel(model);
+            }
     
     UpdateStudent() {
         
-        setSize(800, 450);
-        setLocation(350, 50);
+        setSize(850, 750);
+        setLocation(150, 50);
         
         setLayout(null);
         
@@ -27,23 +42,13 @@ public class UpdateStudent extends JFrame implements ActionListener{
         add(heading);
         
         JLabel lblrollnumber = new JLabel("Select Roll Number");
-        lblrollnumber.setBounds(50, 100, 200, 20);
+        lblrollnumber.setBounds(50, 100, 200, 30);
         lblrollnumber.setFont(new Font("serif", Font.PLAIN, 20));
         add(lblrollnumber);
         
-        crollno = new Choice();
-        crollno.setBounds(250, 100, 200, 20);
+        crollno = new JTextField();
+        crollno.setBounds(250, 100, 150, 30);
         add(crollno);
-        
-        try {
-            Conn c = new Conn();
-            ResultSet rs = c.s.executeQuery("select * from person");
-            while(rs.next()) {
-                crollno.add(rs.getString("PersonID"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         
         JLabel lblname = new JLabel("Name");
         lblname.setBounds(50, 150, 100, 30);
@@ -93,42 +98,8 @@ public class UpdateStudent extends JFrame implements ActionListener{
         Enroll.setBounds(600, 250, 150, 30);
         add(Enroll);
         
-        try {
-            Conn c = new Conn();
-            String query = "select * from person where PersonID='"+crollno.getSelectedItem()+"'";
-            ResultSet rs = c.s.executeQuery(query);
-            while(rs.next()) {
-                labelrollno.setText(rs.getString("PersonID"));
-                txtname.setText(rs.getString("Lastname"));
-                txtfname.setText(rs.getString("Firstname"));
-                String dob = ((JTextField) Hire.getDateEditor().getUiComponent()).getText();
-                String dobenroll = ((JTextField) Enroll.getDateEditor().getUiComponent()).getText();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        crollno.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent ie) {
-                try {
-                    Conn c = new Conn();
-                    String query = "select * from person where PersonID='"+crollno.getSelectedItem()+"'";
-                    ResultSet rs = c.s.executeQuery(query);
-                    while(rs.next()) {
-                        labelrollno.setText(rs.getString("PersonID"));
-                        txtname.setText(rs.getString("Lastname"));
-                        txtfname.setText(rs.getString("Firstname"));
-                        String dob = ((JTextField) Hire.getDateEditor().getUiComponent()).getText();
-                        String dobenroll = ((JTextField) Enroll.getDateEditor().getUiComponent()).getText();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        
         submit = new JButton("Update");
-        submit.setBounds(250, 350, 120, 30);
+        submit.setBounds(250, 300, 120, 30);
         submit.setBackground(Color.BLACK);
         submit.setForeground(Color.WHITE);
         submit.addActionListener(this);
@@ -136,38 +107,54 @@ public class UpdateStudent extends JFrame implements ActionListener{
         add(submit);
         
         cancel = new JButton("Cancel");
-        cancel.setBounds(450, 350, 120, 30);
+        cancel.setBounds(450, 300, 120, 30);
         cancel.setBackground(Color.BLACK);
         cancel.setForeground(Color.WHITE);
         cancel.addActionListener(this);
         cancel.setFont(new Font("Tahoma", Font.BOLD, 15));
         add(cancel);
         
+        table = new JTable();
+        
+        JScrollPane jsp = new JScrollPane(table);
+        jsp.setBounds(50, 350, 730, 350);
+        add(jsp);
+        
         setVisible(true);
     }
     
     public void actionPerformed(ActionEvent ae) {
-        if (ae.getSource() == submit) {
-            String Studentcode = labelrollno.getText();
-            String dob = ((JTextField) Hire.getDateEditor().getUiComponent()).getText();
-            String dobenroll = ((JTextField) Enroll.getDateEditor().getUiComponent()).getText();
-            String name = txtname.getText();
-            String fname = txtfname.getText();
-            
-            try {
-                String query = "update person set Lastname='"+name+"', Firstname='"+fname+"', HireDate='"+dob+"', EnrollmentDate='"+dobenroll+"' where PersonID='"+Studentcode+"'";
-                Conn con = new Conn();
-                con.s.executeUpdate(query);
-                
-                JOptionPane.showMessageDialog(null, "Student Details Updated Successfully");
-                setVisible(false);
-            } catch (Exception e) {
-                e.printStackTrace();
+            if(ae.getSource() == submit) {
+                        int i = table.getSelectedRow();
+                        Student s = new Student();
+                        s.setMasv(crollno.getText());
+                        s.setFirstname(txtfname.getText());
+                        s.setLastname(txtname.getText());
+                        s.setHireDate(grade.getText());
+                        s.setEnrollmentDate(grade.getText());
+                        int check = bus.suaSV(s, i);
+                        if (check == 1) {
+                            (s, i);
+                            JOptionPane.showMessageDialog(null, "Sửa thành công");
+                        }
+                        else {
+                        JOptionPane.showMessageDialog(null, "Sửa thất bại");
+                        setVisible(false);
+                        }
+            } else {
+                        setVisible(false);
             }
-        } else {
-            setVisible(false);
-        }
     }
+    
+            private void tb_st(java.awt.event.MouseEvent evt) {                                        
+                        int i = table.getSelectedRow();
+                                    if (i >= 0) {
+                                                crollno.setText(table.getModel().getValueAt(i, 0).toString());
+                                                txtname.setText(table.getModel().getValueAt(i, 1).toString());
+                                                txtfname.setText(table.getModel().getValueAt(i, 2).toString());
+                                                Hire.setText(table.getModel().getValueAt(i, 3).toString());
+                                    }
+            }
     
     public static void main(String[] args) {
         new UpdateStudent();

@@ -25,7 +25,7 @@ public class StudentBUS {
             list.add(sv);
         return check;
     }
-    public int suaKh(Student sv,int i){
+    public int suaSV(Student sv,int i){
         StudentDAL data = new StudentDAL();
         int check = data.suaSV(sv);
         if(check ==1)
