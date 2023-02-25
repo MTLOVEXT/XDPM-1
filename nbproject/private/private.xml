@@ -3,9 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Workspace/PMPL/XDPM/src/UI/Courseinstructor.java</file>
-            <file>file:/D:/Workspace/PMPL/XDPM/src/UI/Management_Course.java</file>
-            <file>file:/D:/Workspace/PMPL/XDPM/src/UI/Onlinecourse.java</file>
+            <file>file:/D:/Workspace/PMPL/XDPM/src/UI/UpdateTeacher.java</file>
+            <file>file:/D:/Workspace/PMPL/XDPM/src/DAL/StudentGradeDAL.java</file>
+            <file>file:/D:/Workspace/PMPL/XDPM/src/UI/EnterMarks.java</file>
+            <file>file:/D:/Workspace/PMPL/XDPM/src/BUS/StudentGradeBUS.java</file>
         </group>
     </open-files>
 </project-private>

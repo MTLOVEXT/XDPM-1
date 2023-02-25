@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 
 public class UpdateStudent extends JFrame implements ActionListener{
@@ -19,6 +21,47 @@ public class UpdateStudent extends JFrame implements ActionListener{
     JButton submit, cancel;
     JDateChooser Hire, Enroll;
     JTable table;
+    
+            public void loadstudent() {
+                StudentBUS bus = new StudentBUS();
+                try {
+                    bus.docSV();
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Lỗi kết nối đến Database.");
+                    return;
+                }
+                Vector header = new Vector();
+                header.add("Student ID");
+                header.add("Last Name");
+                header.add("First Name");
+                header.add("Hire Date");
+                header.add("Enrollment Date");
+                model = new DefaultTableModel(header, 0) {
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
+                showOnTablestudent(bus.list);
+            }
+            
+            public void showOnTablestudent(ArrayList<Student> list) {
+                model.setRowCount(0);
+                for (Student st : list) {
+                    Vector data = setVectorstudent(st);
+                    model.addRow(data);
+                }
+                table.setModel(model);
+            }
+            
+            public Vector setVectorstudent(Student s) {
+                Vector head = new Vector();
+                head.add(s.getMasv());
+                head.add(s.getLastname());
+                head.add(s.getFirstname());
+                head.add(s.getHireDate());
+                head.add(s.getEnrollmentDate());
+                return head;
+            }
     
             public void setModelValue(Student student, int i) {
                     model.setValueAt(student.getMasv(), i, 0);
@@ -115,6 +158,7 @@ public class UpdateStudent extends JFrame implements ActionListener{
         add(cancel);
         
         table = new JTable();
+        loadstudent();
         
         JScrollPane jsp = new JScrollPane(table);
         jsp.setBounds(50, 350, 730, 350);
