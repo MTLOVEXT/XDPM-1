@@ -237,13 +237,6 @@ public class Onlinecourse extends JFrame implements ActionListener{
         
     }
     
-            public OnlineCourse getText() {
-                        OnlineCourse s = new OnlineCourse();
-                        s.setCourseID(txtCourseID.getText().trim());
-                        s.setUrl(txturl.getText().trim());
-                        return s;
-            }
-    
     public void actionPerformed(ActionEvent ae) {
             if (ae.getSource() == btnsearch) {
                       String[] header = {"CourseID", "URL"};
@@ -264,8 +257,9 @@ public class Onlinecourse extends JFrame implements ActionListener{
                           JOptionPane.showMessageDialog(null, "Không có kết quả phù hợp!");
                       }
                       }else if (ae.getSource() == btnaddButton) {
-                                  OnlineCourse cs = getText();
-                                  Vector head = setVector(cs);
+                                  OnlineCourse cs = new OnlineCourse();
+                                  cs.setCourseID(txtCourseID.getText());
+                                  cs.setUrl(txturl.getText());
                                   int check = bus.them(cs);
                                   if(check == 1){ 
                                       JOptionPane.showMessageDialog(null, "Thêm thành công");
@@ -275,7 +269,9 @@ public class Onlinecourse extends JFrame implements ActionListener{
                                   }
                       }else if(ae.getSource() == btnsubmit) {
                                   int i = tableOnl.getSelectedRow();
-                                  OnlineCourse s = getText();
+                                  OnlineCourse s = new OnlineCourse();
+                                  s.setCourseID(txtCourseID.getText());
+                                  s.setUrl(txturl.getText());
                                   int check = bus.sua(s, i);
                                   if (check == 1) {
                                       setModelValue(s, i);
