@@ -44,13 +44,13 @@ public class Courseinstructor extends JFrame implements ActionListener{
             CourseInstructorBUS buscourseinstructor = new CourseInstructorBUS();
             
             Vector header = new Vector();
-            JLabel reload;
+            JButton reload;
             JTextField txtCourseID,txtPersonID;
             JButton btnaddButton,btncancel,btnsubmit,btnsearch;
             JTable tb_teacher,tbcourse,tbsearch;
             JComboBox cbsearch;
             JTextField txt_search;
-            ImageIcon img = new ImageIcon("path/to/image.jpg");
+            ImageIcon img = new ImageIcon("icons/icons8-sync-50.png");
             
             public CourseInstructor getText() {
                 CourseInstructor cs = new CourseInstructor();
@@ -238,11 +238,11 @@ public class Courseinstructor extends JFrame implements ActionListener{
         txt_search.setFont(new Font("serif", Font.BOLD, 20));
         add(txt_search);
         
-        btnreload = new JLabel(img);
-        btnreload.setBounds(275, 150, 200, 30);
-        btnreload.addActionListener(this);
-        btnreload.setFont(new Font("serif", Font.BOLD, 20));
-        add(btnreload);
+        reload = new JButton("Reload");
+        reload.setBounds(500, 150, 100, 50);
+        reload.addActionListener(this);
+        reload.setFont(new Font("serif", Font.BOLD, 20));
+        add(reload);
         
         btnaddButton = new JButton("Add");
         btnaddButton.setBounds(50, 230, 100, 50);
@@ -359,7 +359,13 @@ public class Courseinstructor extends JFrame implements ActionListener{
                         else {
                         JOptionPane.showMessageDialog(null, "Sửa thất bại");
                     }
-            } else {
+            } 
+            else if(ae.getSource() == reload) {
+                        txtCourseID.setEditable(true);
+                        txtPersonID.setText("");
+                        txtCourseID.setText("");
+                        txt_search.setText("");
+            }else {
                         setVisible(false);
             }
     }
