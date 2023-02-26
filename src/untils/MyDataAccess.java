@@ -27,7 +27,7 @@ public class MyDataAccess {
     
     public void RegDriver() throws Exception{
         try{
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
         }catch(java.lang.ClassNotFoundException e){
             throw new Exception("MYSQL JDBC Driver not found.");
         }

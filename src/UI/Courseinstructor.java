@@ -3,9 +3,11 @@ package UI;
 //để tạo thành 1 bảng xuất dữ liệu 
 import BLL.Course;
 import BLL.CourseInstructor;
+import BLL.Student;
 import BLL.Teacher;
 import BUS.CourseBUS;
 import BUS.CourseInstructorBUS;
+import BUS.StudentBUS;
 import BUS.TeacherBUS;
 import java.awt.Button;
 import java.awt.Choice;
@@ -34,8 +36,8 @@ public class Courseinstructor extends JFrame implements ActionListener{
             ArrayList<CourseInstructor> arr = new ArrayList<CourseInstructor>();
             ArrayList<CourseInstructor> tempsearch = new ArrayList<CourseInstructor>();
     
-            DefaultTableModel modelgv = new DefaultTableModel();
-            TeacherBUS busgv = new TeacherBUS();
+            DefaultTableModel modelsv = new DefaultTableModel();
+            StudentBUS bussv = new StudentBUS();
 
             DefaultTableModel modelcourse = new DefaultTableModel();
             CourseBUS buscourse = new CourseBUS();
@@ -62,9 +64,9 @@ public class Courseinstructor extends JFrame implements ActionListener{
             //load bảng teacher
             
             private void load(){
-                TeacherBUS bus = new TeacherBUS();       
+                StudentBUS bus = new StudentBUS();       
                 try{
-                   bus.docTC();
+                   bus.docSV();
                }catch(Exception e){
                    JOptionPane.showMessageDialog(null, "Lỗi kết nối đến Database.");
                    return;
@@ -73,7 +75,7 @@ public class Courseinstructor extends JFrame implements ActionListener{
                 header.add("PersonID");
                 header.add("Lastname");
                 header.add("Firstname");
-                    modelgv = new DefaultTableModel(header,0){
+                    modelsv = new DefaultTableModel(header,0){
                     public boolean isCellEditable(int row, int column)
                         {
                           return false;
@@ -82,20 +84,20 @@ public class Courseinstructor extends JFrame implements ActionListener{
                showOnTable(bus.list);
             }
 
-            private void showOnTable(ArrayList<Teacher> list){
-                modelgv.setRowCount(0);
-                for(Teacher gv:list){
-                   Vector data = setVector(gv);
-                   modelgv.addRow(data);
+            private void showOnTable(ArrayList<Student> list){
+                modelsv.setRowCount(0);
+                for(Student svStudent:list){
+                   Vector data = setVector(svStudent);
+                   modelsv.addRow(data);
                }
-               tb_teacher.setModel(modelgv);
+               tb_teacher.setModel(modelsv);
             }
 
-            private Vector setVector(Teacher sv){
+            private Vector setVector(Student sv){
                     header = new Vector();
-                    header.add(sv.getTeacherid());
-                    header.add(sv.getName());
-                    header.add(sv.getFname());
+                    header.add(sv.getMasv());
+                    header.add(sv.getLastname());
+                    header.add(sv.getFirstname());
                     return header;
             }    
 
@@ -183,8 +185,8 @@ public class Courseinstructor extends JFrame implements ActionListener{
             }
             
             public void setModelValuePerson(Teacher cs, int i) {
-                modelgv.setValueAt(cs.getTeacherid(), i, 0);
-                tb_teacher.setModel(modelgv);
+                modelsv.setValueAt(cs.getTeacherid(), i, 0);
+                tb_teacher.setModel(modelsv);
             }
             
             public void setModelValue(CourseInstructor cs, int i) {
@@ -311,6 +313,7 @@ public class Courseinstructor extends JFrame implements ActionListener{
                             tb_Search(evt);
                         }
             });
+            cbsearch.setEditable(false);
         
         setVisible(true);
         

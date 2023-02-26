@@ -7,9 +7,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public class UpdateStudent extends JFrame implements ActionListener{
     
@@ -67,13 +70,10 @@ public class UpdateStudent extends JFrame implements ActionListener{
                     model.setValueAt(student.getMasv(), i, 0);
                     model.setValueAt(student.getLastname(), i, 1);
                     model.setValueAt(student.getFirstname(), i, 2);
-                    model.setValueAt(student.getHireDate(), i, 3);
-                    model.setValueAt(student.getEnrollmentDate(), i, 4);
                     table.setModel(model);
             }
     
-    UpdateStudent() {
-        
+    UpdateStudent() {        
         setSize(850, 750);
         setLocation(150, 50);
         
@@ -163,6 +163,12 @@ public class UpdateStudent extends JFrame implements ActionListener{
         JScrollPane jsp = new JScrollPane(table);
         jsp.setBounds(50, 350, 730, 350);
         add(jsp);
+                
+                        table.addMouseListener(new java.awt.event.MouseAdapter() {
+                                    public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                                tb_st(evt);
+                                    }
+                        });
         
         setVisible(true);
     }
@@ -170,15 +176,20 @@ public class UpdateStudent extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent ae) {
             if(ae.getSource() == submit) {
                         int i = table.getSelectedRow();
+                        java.util.Date selectedDate = Hire.getDate();
+                        java.util.Date selecteddcEnrol = Enroll.getDate();
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                        String dateHire = dateFormat.format(selectedDate);
+                        String dc = dateFormat.format(selecteddcEnrol);
                         Student s = new Student();
                         s.setMasv(crollno.getText());
                         s.setFirstname(txtfname.getText());
                         s.setLastname(txtname.getText());
-                        s.setHireDate(grade.getText());
-                        s.setEnrollmentDate(grade.getText());
+                        s.setHireDate(dateHire.trim());
+                        s.setEnrollmentDate(dc.trim());
                         int check = bus.suaSV(s, i);
                         if (check == 1) {
-                            (s, i);
+                            setModelValue(s, i);
                             JOptionPane.showMessageDialog(null, "Sửa thành công");
                         }
                         else {
@@ -192,11 +203,11 @@ public class UpdateStudent extends JFrame implements ActionListener{
     
             private void tb_st(java.awt.event.MouseEvent evt) {                                        
                         int i = table.getSelectedRow();
+                        
                                     if (i >= 0) {
                                                 crollno.setText(table.getModel().getValueAt(i, 0).toString());
                                                 txtname.setText(table.getModel().getValueAt(i, 1).toString());
                                                 txtfname.setText(table.getModel().getValueAt(i, 2).toString());
-                                                Hire.setText(table.getModel().getValueAt(i, 3).toString());
                                     }
             }
     

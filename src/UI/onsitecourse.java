@@ -1,12 +1,20 @@
 package UI;
 
+import BLL.Course;
+import BLL.OnsiteCourse;
+import BLL.StudentGrade;
+import BUS.CourseBUS;
+import BUS.OnsiteCourseBUS;
+import BUS.StudentGradeBUS;
 import java.awt.Choice;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Random;
+import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -16,21 +24,114 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.Timer;
+import javax.swing.table.DefaultTableModel;
 import net.proteanit.sql.DbUtils;
 
 public class onsitecourse extends JFrame implements ActionListener{
     
-            JTextField tfname,txtlocaltion,txttimer ;
-            Choice cCourse;
+            JTextField tfname,txtlocaltion,txttimer,txtcourseID; 
             JButton btnaddButton,btncancel,btnsubmit,btnsearch;
-            JTable table;
+            JTable tb_onsite,tb_course;
             JComboBox cbdays, cbbranch, cbsemester;
+            
+            OnsiteCourseBUS busonsite = new OnsiteCourseBUS();
+            DefaultTableModel modelonsite = new DefaultTableModel();
+            
+            CourseBUS buscourse = new CourseBUS();
+            DefaultTableModel modelcourse = new DefaultTableModel();
     
             Random ran = new Random();
             long first4 = Math.abs((ran.nextLong() % 9000L) + 1000L);
+            
+            public void loadonsite() {
+                OnsiteCourseBUS bus = new OnsiteCourseBUS();
+                try {
+                    bus.doc();
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Lỗi kết nối đến Database.");
+                    return;
+                }
+                Vector header = new Vector();
+                header.add("Course ID");
+                header.add("Location");
+                header.add("Days");
+                header.add("Time");
+                modelonsite = new DefaultTableModel(header, 0) {
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
+                showOnTable(bus.list);
+            }
+            
+            public void showOnTable(ArrayList<OnsiteCourse> list) {
+                modelonsite.setRowCount(0);
+                for (OnsiteCourse s : list) {
+                    Vector data = setVector(s);
+                    modelonsite.addRow(data);
+                }
+                tb_onsite.setModel(modelonsite);
+            }
+            
+            public Vector setVector(OnsiteCourse s) {
+                Vector head = new Vector();
+                head.add(s.getCourseID());
+                head.add(s.getLocation());
+                head.add(s.getDays());
+                head.add(s.getTime());
+                return head;
+            }
+            
+            public void loadcourse() {
+                CourseBUS bus = new CourseBUS();
+                try {
+                    bus.docCourse();
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Lỗi kết nối đến Database.");
+                    return;
+                }
+                Vector header = new Vector();
+                header.add("Course ID");
+                header.add("Title");
+                modelcourse = new DefaultTableModel(header, 0) {
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
+                showOnTablecourse(bus.list);
+            }
+            
+            public void showOnTablecourse(ArrayList<Course> list) {
+                modelcourse.setRowCount(0);
+                for (Course s : list) {
+                    Vector data = setVectorcourse(s);
+                    modelcourse.addRow(data);
+                }
+                tb_course.setModel(modelcourse);
+            }
+            
+            public Vector setVectorcourse(Course s) {
+                Vector head = new Vector();
+                head.add(s.getCourseID());
+                head.add(s.getTitle());
+                return head;
+            }
+            
+            public void setModelValuecourse(Course on, int i) {
+                modelcourse.setValueAt(on.getCourseID(), i, 0);
+                tb_course.setModel(modelcourse);
+            }
+            
+            public void setModelValue(OnsiteCourse on, int i) {
+                modelonsite.setValueAt(on.getCourseID(), i, 0);
+                modelonsite.setValueAt(on.getLocation(), i, 1);
+                modelonsite.setValueAt(on.getDays(), i, 2);
+                modelonsite.setValueAt(on.getTime(), i, 3);
+                tb_onsite.setModel(modelonsite);
+            }
     
     onsitecourse() {
-        setSize(800, 700);
+        setSize(800, 750);
         setLocation(250, 50);
         setLayout(null);
         
@@ -46,20 +147,10 @@ public class onsitecourse extends JFrame implements ActionListener{
         lblname.setFont(new Font("serif", Font.BOLD, 20));
         add(lblname);
         
-        cCourse = new Choice();
-        cCourse.setBounds(150, 90, 100, 60);
-        cCourse.setFont(new Font("serif", Font.BOLD, 20));
-        add(cCourse);
-        
-        try {
-            Conn c = new Conn();
-            ResultSet rs = c.s.executeQuery("select * from course");
-            while(rs.next()) {
-                cCourse.add(rs.getString("CourseID"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        txtcourseID = new JTextField();
+        txtcourseID.setBounds(150, 90, 100, 30);
+        txtcourseID.setFont(new Font("serif", Font.BOLD, 20));
+        add(txtcourseID);
         
         JLabel lblurl = new JLabel("Localtion");
         lblurl.setBounds(300, 80, 100, 45);
@@ -94,91 +185,78 @@ public class onsitecourse extends JFrame implements ActionListener{
         add(txttimer);
         
         btnaddButton = new JButton("Add");
-        btnaddButton.setBounds(50, 250, 100, 50);
+        btnaddButton.setBounds(50, 280, 100, 50);
         btnaddButton.addActionListener(this);
         btnaddButton.setFont(new Font("serif", Font.BOLD, 20));
         add(btnaddButton);
         
         btnsubmit = new JButton("Edit");
-        btnsubmit.setBounds(200, 250, 100, 50);
+        btnsubmit.setBounds(200, 280, 100, 50);
         btnsubmit.addActionListener(this);
         btnsubmit.setFont(new Font("serif", Font.BOLD, 20));
         add(btnsubmit);
         
         btnsearch = new JButton("Search");
-        btnsearch.setBounds(350, 250, 100, 50);
+        btnsearch.setBounds(350, 280, 100, 50);
         btnsearch.addActionListener(this);
         btnsearch.setFont(new Font("serif", Font.BOLD, 20));
         add(btnsearch);
         
         btncancel = new JButton("Cancel");
-        btncancel.setBounds(500, 250, 100, 50);
+        btncancel.setBounds(500, 280, 100, 50);
         btncancel.addActionListener(this);
         btncancel.setFont(new Font("serif", Font.BOLD, 20));
         add(btncancel);
         
-        table = new JTable();
+        tb_onsite = new JTable();
+        loadonsite();
         
-        try {
-            Conn c = new Conn();
-            ResultSet rs = c.s.executeQuery("select * from onsitecourse");
-            table.setModel(DbUtils.resultSetToTableModel(rs));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        
-        JScrollPane jsp = new JScrollPane(table);
-        jsp.setBounds(0, 350, 800, 500);
+        JScrollPane jsp = new JScrollPane(tb_onsite);
+        jsp.setBounds(400, 350, 400, 360);
         add(jsp);
+        
+        tb_course = new JTable();
+        loadcourse();
+        
+        JScrollPane jsp1 = new JScrollPane(tb_course);
+        jsp1.setBounds(0, 350, 400, 360);
+        add(jsp1);
+        
+                        tb_onsite.addMouseListener(new java.awt.event.MouseAdapter() {
+                                    public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                                tb(evt);
+                                    }
+                        });
+                        
+                        tb_course.addMouseListener(new java.awt.event.MouseAdapter() {
+                                    public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                                tb_course(evt);
+                                    }
+                        });
         
         setVisible(true);
         
     }
     
     public void actionPerformed(ActionEvent ae) {
-         if (ae.getSource() == btnsearch) {
-            String query = "select * from onsitecourse where CourseID = '"+cCourse.getSelectedItem()+"'";
-            try {
-                Conn c = new Conn();
-                ResultSet rs = c.s.executeQuery(query);
-                table.setModel(DbUtils.resultSetToTableModel(rs));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }  else if (ae.getSource() == btnaddButton) {
-            String courseid = cCourse.getSelectedItem();
-            String localString = txtlocaltion.getText();
-            String days = (String) cbdays.getSelectedItem();
-            String time = txttimer.getText();
-            try {
-                String query = "insert into onsitecourse values('"+courseid+"', '"+localString+"', '"+days+"', '"+time+"')";
-
-                Conn con = new Conn();
-                con.s.executeUpdate(query);
-                
-                JOptionPane.showMessageDialog(null, "Onsitecourse details Inserted Successfully");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else if (ae.getSource() == btnsubmit) {
-            String courseid = cCourse.getSelectedItem();
-            String localString = txtlocaltion.getText();
-            String days = (String) cbdays.getSelectedItem();
-            String time = txttimer.getText();
-            try {
-                String query = "update onsitecourse set CourseID='"+courseid+"', Location='"+localString+"', Days='"+days+"', Time='"+time+"' where CourseID='"+courseid+"'";
-                Conn con = new Conn();
-                con.s.executeUpdate(query);
-                
-                JOptionPane.showMessageDialog(null, "Onsitecourse Updated Successfully");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            setVisible(false);
-        }
+            
     }
+    
+            private void tb(java.awt.event.MouseEvent evt) {                                        
+            int i = tb_onsite.getSelectedRow();
+                        if (i >= 0) {
+                                    txtcourseID.setText(tb_onsite.getModel().getValueAt(i, 0).toString());
+                                    txtlocaltion.setText(tb_onsite.getModel().getValueAt(i, 1).toString());
+                                    txttimer.setText(tb_onsite.getModel().getValueAt(i, 3).toString());
+                        }
+            }
+            
+            private void tb_course(java.awt.event.MouseEvent evt) {                                        
+            int i = tb_course.getSelectedRow();
+                        if (i >= 0) {
+                                    txtcourseID.setText(tb_course.getModel().getValueAt(i, 0).toString());
+                        }
+            }
 
     public static void main(String[] args) {
         new onsitecourse();

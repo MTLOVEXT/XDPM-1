@@ -121,7 +121,7 @@ public class AddStudent extends JFrame implements ActionListener{
             Date selecteddcEnrol = dcEnrol.getDate();
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             String dateHire = dateFormat.format(selectedDate);
-            String dc = dateFormat.format(selectedDate);
+            String dc = dateFormat.format(selecteddcEnrol);
             Student sv = new Student();
             sv.setMasv(txtmmasv.getText().trim());
             sv.setLastname(lname.getText().trim());
