@@ -44,4 +44,23 @@ public class StudentBUS {
         }
         return find; 
     }    
+     public static ArrayList<Student> timkiem(String key, String query) {
+                ArrayList<Student> temp = new ArrayList<>();
+                StudentDAL data = new StudentDAL();
+                try{
+                ArrayList<Student> s = data.docSV();
+                if (key.equals("MSSV")) {
+                    for (int i = 0; i < s.size(); i++) {
+                        if (s.get(i).getMasv().toLowerCase().equals(query)) {
+                            temp.add(s.get(i));
+                        }
+
+                    }
+                    return temp;
+                }
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+                return null;
+            }
 }

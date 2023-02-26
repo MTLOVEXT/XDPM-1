@@ -270,8 +270,8 @@ public class Onlinecourse extends JFrame implements ActionListener{
                       }else if(ae.getSource() == btnsubmit) {
                                   int i = tableOnl.getSelectedRow();
                                   OnlineCourse s = new OnlineCourse();
-                                  s.setCourseID(txtCourseID.getText());
-                                  s.setUrl(txturl.getText());
+                                  s.setCourseID(txtCourseID.getText().trim());
+                                  s.setUrl(txturl.getText().trim());
                                   int check = bus.sua(s, i);
                                   if (check == 1) {
                                       setModelValue(s, i);

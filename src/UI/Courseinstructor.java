@@ -49,7 +49,7 @@ public class Courseinstructor extends JFrame implements ActionListener{
             JButton reload;
             JTextField txtCourseID,txtPersonID;
             JButton btnaddButton,btncancel,btnsubmit,btnsearch;
-            JTable tb_teacher,tbcourse,tbsearch;
+            JTable tb_student,tbcourse,tbsearch;
             JComboBox cbsearch;
             JTextField txt_search;
             ImageIcon img = new ImageIcon("icons/icons8-sync-50.png");
@@ -90,7 +90,7 @@ public class Courseinstructor extends JFrame implements ActionListener{
                    Vector data = setVector(svStudent);
                    modelsv.addRow(data);
                }
-               tb_teacher.setModel(modelsv);
+               tb_student.setModel(modelsv);
             }
 
             private Vector setVector(Student sv){
@@ -186,7 +186,7 @@ public class Courseinstructor extends JFrame implements ActionListener{
             
             public void setModelValuePerson(Teacher cs, int i) {
                 modelsv.setValueAt(cs.getTeacherid(), i, 0);
-                tb_teacher.setModel(modelsv);
+                tb_student.setModel(modelsv);
             }
             
             public void setModelValue(CourseInstructor cs, int i) {
@@ -270,11 +270,11 @@ public class Courseinstructor extends JFrame implements ActionListener{
         btncancel.setFont(new Font("serif", Font.BOLD, 20));
         add(btncancel);
         //bảng chọn giáo viên phân công
-        tb_teacher = new JTable();
+        tb_student = new JTable();
         
         load();
         
-        JScrollPane jsp = new JScrollPane(tb_teacher);
+        JScrollPane jsp = new JScrollPane(tb_student);
         jsp.setBounds(300, 300, 680, 500);
         jsp.setFont(new Font("serif", Font.BOLD, 20));
         add(jsp);
@@ -298,7 +298,7 @@ public class Courseinstructor extends JFrame implements ActionListener{
         jsp2.setFont(new Font("serif", Font.BOLD, 20));
         add(jsp2);
         //Lấy dữ liệu từ bảng lên form
-            tb_teacher.addMouseListener(new java.awt.event.MouseAdapter() {
+            tb_student.addMouseListener(new java.awt.event.MouseAdapter() {
                         public void mouseClicked(java.awt.event.MouseEvent evt) {
                             tb_Teacher(evt);
                         }
@@ -351,7 +351,7 @@ public class Courseinstructor extends JFrame implements ActionListener{
                         }
             }
             //ý tưởng sửa lấy dữ liệu từ bảng lên form và sửa 
-            else if(ae.getSource() == btnsubmit) {//Chỉ sửa được mã nhân viên trong bảng giáo viên
+            else if(ae.getSource() == btnsubmit) {//Chỉ sửa được mã nhân viên trong bảng học sinh
                         int i = tbsearch.getSelectedRow();
                         CourseInstructor cs = new CourseInstructor();
                         cs.setCourseID(txtCourseID.getText().trim());
@@ -380,9 +380,9 @@ public class Courseinstructor extends JFrame implements ActionListener{
     }
     
             private void tb_Teacher(java.awt.event.MouseEvent evt) {                                        
-                        int i = tb_teacher.getSelectedRow();
+                        int i = tb_student.getSelectedRow();
                         if (i >= 0) {
-                                    txtPersonID.setText(tb_teacher.getModel().getValueAt(i, 0).toString());
+                                    txtPersonID.setText(tb_student.getModel().getValueAt(i, 0).toString());
                         }
             }
             

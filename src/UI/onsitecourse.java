@@ -2,10 +2,8 @@ package UI;
 
 import BLL.Course;
 import BLL.OnsiteCourse;
-import BLL.StudentGrade;
 import BUS.CourseBUS;
 import BUS.OnsiteCourseBUS;
-import BUS.StudentGradeBUS;
 import java.awt.Choice;
 import java.awt.Color;
 import java.awt.Font;
@@ -29,10 +27,13 @@ import net.proteanit.sql.DbUtils;
 
 public class onsitecourse extends JFrame implements ActionListener{
     
-            JTextField tfname,txtlocaltion,txttimer,txtcourseID; 
+            ArrayList<OnsiteCourse> arr = new ArrayList<OnsiteCourse>();
+            ArrayList<OnsiteCourse> tempsearch = new ArrayList<OnsiteCourse>();
+            
+            JTextField tfname,txtlocaltion,txttimer,txtcourseID,txtsearch; 
             JButton btnaddButton,btncancel,btnsubmit,btnsearch;
             JTable tb_onsite,tb_course;
-            JComboBox cbdays, cbbranch, cbsemester;
+            JComboBox cbdays, cbsearch;
             
             OnsiteCourseBUS busonsite = new OnsiteCourseBUS();
             DefaultTableModel modelonsite = new DefaultTableModel();
@@ -184,6 +185,20 @@ public class onsitecourse extends JFrame implements ActionListener{
         txttimer.setFont(new Font("serif", Font.BOLD, 20));
         add(txttimer);
         
+        cbsearch = new JComboBox();
+        cbsearch.setBounds(100, 200, 150, 50);
+        cbsearch.addItem("CourseID");
+        cbsearch.addItem("Location");
+        cbsearch.addItem("Days");
+        cbsearch.addItem("Time");
+        cbsearch.setFont(new Font("serif", Font.BOLD, 20));
+        add(cbsearch);
+        
+        txtsearch = new JTextField();
+        txtsearch.setBounds(260, 200, 150, 50);
+        txtsearch.setFont(new Font("serif", Font.BOLD, 20));
+        add(txtsearch);
+        
         btnaddButton = new JButton("Add");
         btnaddButton.setBounds(50, 280, 100, 50);
         btnaddButton.addActionListener(this);
@@ -239,7 +254,58 @@ public class onsitecourse extends JFrame implements ActionListener{
     }
     
     public void actionPerformed(ActionEvent ae) {
-            
+            if (ae.getSource() == btnsearch) {
+                        String[] header = {"CourseID", "Location","Days","Time"};
+                        DefaultTableModel modelsearch = new DefaultTableModel(header, 0);
+                        ArrayList<OnsiteCourse> st;
+                        st = busonsite.timkiem(String.valueOf(cbsearch.getSelectedItem()), txtsearch.getText().toLowerCase().trim());
+                        if (st.size() != 0) {
+                            for (int i = 0; i < st.size(); i++) {
+                                Object[] row = {st.get(i).getCourseID(), st.get(i).getLocation(), st.get(i).getDays(), st.get(i).getTime()
+                                };
+                                modelsearch.addRow(row);
+                            }
+                            tempsearch.addAll(arr);
+                            arr.clear();
+                            arr.addAll(st);
+                            tb_onsite.setModel(modelsearch);
+                        } else {
+                                JOptionPane.showMessageDialog(null, "Không có kết quả phù hợp!");
+                        }
+            }
+            else if (ae.getSource() == btnaddButton) {
+                            OnsiteCourse cs = new OnsiteCourse();
+                            cs.setCourseID(txtcourseID.getText());
+                            cs.setLocation(txtlocaltion.getText());
+                            cs.setDays((String) cbdays.getSelectedItem());
+                            cs.setTime(txttimer.getText());
+                            int check = busonsite.them(cs);
+                            if(check == 1){ 
+                                JOptionPane.showMessageDialog(null, "Thêm thành công");
+                                setVisible(false);
+                                }else{JOptionPane.showMessageDialog(null, "Thêm thất bại");
+                                setVisible(false);
+                            }
+            }
+            else if(ae.getSource() == btnsubmit) {
+                        int i = tb_onsite.getSelectedRow();
+                        OnsiteCourse s = new OnsiteCourse();
+                        s.setCourseID(txtcourseID.getText());
+                        s.setLocation(txtlocaltion.getText());
+                        s.setDays((String) cbdays.getSelectedItem());
+                        s.setTime(txttimer.getText());
+                        int check = busonsite.sua(s, i);
+                        if (check == 1) {
+                            setModelValue(s, i);
+                            JOptionPane.showMessageDialog(null, "Sửa thành công");
+                        }
+                        else {
+                                    JOptionPane.showMessageDialog(null, "Sửa thất bại");
+                                    setVisible(false);
+                        }
+            } else {
+                        setVisible(false);
+            }
     }
     
             private void tb(java.awt.event.MouseEvent evt) {                                        

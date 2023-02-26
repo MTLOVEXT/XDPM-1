@@ -15,8 +15,12 @@ public class StudentDetails extends JFrame implements ActionListener {
 
     DefaultTableModel model = new DefaultTableModel();
     StudentBUS bus = new StudentBUS();
+    
+    ArrayList<Student> arr = new ArrayList<Student>();
+    ArrayList<Student> tempsearch = new ArrayList<Student>();
 
-    Choice crollno;
+    JComboBox mssv;
+    JTextField txtmssv;
     JTable table;
     JButton search, print, update, add, cancel;
     
@@ -67,23 +71,14 @@ public class StudentDetails extends JFrame implements ActionListener {
         getContentPane().setBackground(Color.WHITE);
         setLayout(null);
         
-        JLabel heading = new JLabel("Search by Roll Number");
-        heading.setBounds(20, 20, 150, 20);
-        add(heading);
+        mssv = new JComboBox();
+        mssv.addItem("MSSV");
+        mssv.setBounds(20, 20, 150, 20);
+        add(mssv);
         
-        crollno = new Choice();
-        crollno.setBounds(180, 20, 150, 20);
-        add(crollno);
-        
-        try {
-            Conn c = new Conn();
-            ResultSet rs = c.s.executeQuery("select * from person");
-            while(rs.next()) {
-                crollno.add(rs.getString("PersonID"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        txtmssv = new JTextField();
+        txtmssv.setBounds(200, 20, 150, 20);
+        add(txtmssv);
         
         table = new JTable();
         
@@ -124,16 +119,26 @@ public class StudentDetails extends JFrame implements ActionListener {
     }
     
     public void actionPerformed(ActionEvent ae) {
-        if (ae.getSource() == search) {
-            String query = "select * from person where PersonID = '"+crollno.getSelectedItem()+"'";
-            try {
-                Conn c = new Conn();
-                ResultSet rs = c.s.executeQuery(query);
-                table.setModel(DbUtils.resultSetToTableModel(rs));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else if (ae.getSource() == print) {
+            if (ae.getSource() == search) {
+                 String[] header = {"MSSV","LastName","FirstName","HireDate","EnrollmentDate"};
+                 DefaultTableModel modelsearch = new DefaultTableModel(header, 0);
+                 ArrayList<Student> s;
+                 s = bus.timkiem(String.valueOf(mssv.getSelectedItem()), txtmssv.getText().toLowerCase().trim());
+                 if (s.size() != 0) {
+                     for (int i = 0; i < s.size(); i++) {
+                         Object[] row = {s.get(i).getMasv(), s.get(i).getLastname(), s.get(i).getFirstname(), s.get(i).getHireDate(), s.get(i).getEnrollmentDate()
+                         };
+                         modelsearch.addRow(row);
+                     }
+                     tempsearch.addAll(arr);
+                     arr.clear();
+                     arr.addAll(s);
+
+                     table.setModel(modelsearch);
+                 } else {
+                     JOptionPane.showMessageDialog(null, "Không có kết quả phù hợp!");
+                 }
+            }else if (ae.getSource() == print) {
             try {
                 table.print();
             } catch (Exception e) {
