@@ -33,7 +33,8 @@ public class onsitecourse extends JFrame implements ActionListener{
             JTextField tfname,txtlocaltion,txttimer,txtcourseID,txtsearch; 
             JButton btnaddButton,btncancel,btnsubmit,btnsearch,delete;
             JTable tb_onsite,tb_course;
-            JComboBox cbdays, cbsearch;
+            JComboBox cbdays, cbsearch,cbgio,cbphut;
+            String hour ,minute;
             
             OnsiteCourseBUS busonsite = new OnsiteCourseBUS();
             DefaultTableModel modelonsite = new DefaultTableModel();
@@ -164,26 +165,41 @@ public class onsitecourse extends JFrame implements ActionListener{
         add(txtlocaltion);
         
         JLabel lblday = new JLabel("Days");
-        lblday.setBounds(80, 150, 100, 45);
+        lblday.setBounds(50, 150, 100, 45);
         lblday.setFont(new Font("serif", Font.BOLD, 20));
         add(lblday);
         
         String course[] = {"T2,T4,T6", "T3,T5,T7","T6,CN","T5","T6","T7","CN"};
         cbdays = new JComboBox(course);
-        cbdays.setBounds(135, 150, 200, 45);
+        cbdays.setBounds(135, 150, 150, 45);
         cbdays.setFont(new Font("serif", Font.BOLD, 20));
         cbdays.setBackground(Color.WHITE);
         add(cbdays);
         
         JLabel lbltime = new JLabel("Time");
-        lbltime.setBounds(350, 150, 100, 45);
+        lbltime.setBounds(300, 150, 100, 45);
         lbltime.setFont(new Font("serif", Font.BOLD, 20));
         add(lbltime);
         
-        txttimer = new JTextField();
-        txttimer.setBounds(400, 150, 200, 45);
-        txttimer.setFont(new Font("serif", Font.BOLD, 20));
-        add(txttimer);
+        String[] hours = new String[24];
+        for (int i = 0; i < 24; i++) {
+            hours[i] = String.format("%02d", i);
+        }
+        cbgio = new JComboBox(hours);
+        cbgio.setBounds(400, 150, 60, 35);
+        cbgio.setFont(new Font("serif", Font.BOLD, 20));
+        cbgio.setBackground(Color.WHITE);
+        add(cbgio);
+        
+        String[] minutes = new String[60];
+        for (int i = 0; i < 60; i++) {
+            minutes[i] = String.format("%02d", i);
+        }
+        cbphut = new JComboBox(minutes);
+        cbphut.setBounds(470, 150, 60, 35);
+        cbphut.setFont(new Font("serif", Font.BOLD, 20));
+        cbphut.setBackground(Color.WHITE);
+        add(cbphut);
         
         cbsearch = new JComboBox();
         cbsearch.setBounds(100, 200, 150, 50);
@@ -280,11 +296,14 @@ public class onsitecourse extends JFrame implements ActionListener{
                         }
             }
             else if (ae.getSource() == btnaddButton) {
+                            hour = (String) cbgio.getSelectedItem();
+                            minute = (String) cbphut.getSelectedItem();
+                            String time = (hour + ":" +minute + ":00");
                             OnsiteCourse cs = new OnsiteCourse();
                             cs.setCourseID(txtcourseID.getText());
                             cs.setLocation(txtlocaltion.getText());
                             cs.setDays((String) cbdays.getSelectedItem());
-                            cs.setTime(txttimer.getText());
+                            cs.setTime(time);
                             int check = busonsite.them(cs);
                             if(check == 1){ 
                                 JOptionPane.showMessageDialog(null, "Thêm thành công");
@@ -307,12 +326,15 @@ public class onsitecourse extends JFrame implements ActionListener{
                         }else setVisible(false);
             }
             else if(ae.getSource() == btnsubmit) {
+                        hour = (String) cbgio.getSelectedItem();
+                        minute = (String) cbphut.getSelectedItem();
+                        String time = (hour + ":" +minute + ":00");
                         int i = tb_onsite.getSelectedRow();
                         OnsiteCourse s = new OnsiteCourse();
                         s.setCourseID(txtcourseID.getText());
                         s.setLocation(txtlocaltion.getText());
                         s.setDays((String) cbdays.getSelectedItem());
-                        s.setTime(txttimer.getText());
+                        s.setTime(time);
                         int check = busonsite.sua(s, i);
                         if (check == 1) {
                             setModelValue(s, i);
@@ -332,7 +354,6 @@ public class onsitecourse extends JFrame implements ActionListener{
                         if (i >= 0) {
                                     txtcourseID.setText(tb_onsite.getModel().getValueAt(i, 0).toString());
                                     txtlocaltion.setText(tb_onsite.getModel().getValueAt(i, 1).toString());
-                                    txttimer.setText(tb_onsite.getModel().getValueAt(i, 3).toString());
                         }
             }
             
