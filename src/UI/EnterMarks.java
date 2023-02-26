@@ -32,7 +32,7 @@ public class EnterMarks extends JFrame implements ActionListener {
     JTable tbMark,tbCourse,tbStudent;
     JComboBox cbsearch;
     JTextField grade;
-    JButton cancel, submit,btnadd,search;
+    JButton cancel, submit,btnadd,search,reload;
     
     
     Random ran = new Random();
@@ -207,8 +207,15 @@ public class EnterMarks extends JFrame implements ActionListener {
         add(lblenrollment);
         
         txt_enrollID = new JTextField(""+first4);
-        txt_enrollID.setBounds(150, 120, 200, 20);
+        txt_enrollID.setBounds(150, 120, 150, 20);
         add(txt_enrollID);
+        
+        reload = new JButton("Reload");
+        reload.setBounds(300, 120, 100, 20);
+        reload.setBackground(Color.BLACK);
+        reload.setForeground(Color.WHITE);
+        reload.addActionListener(this);
+        add(reload);
         
         JLabel lblentersubject = new JLabel("Course selection");
         lblentersubject.setBounds(100, 150, 200, 40);
@@ -341,12 +348,21 @@ public class EnterMarks extends JFrame implements ActionListener {
                                if (check == 1) {
                                    setModelValuemark(s, i);
                                    JOptionPane.showMessageDialog(null, "Sửa thành công");
+                                   setVisible(false);
                                }
                                else {
                                JOptionPane.showMessageDialog(null, "Sửa thất bại");
                                setVisible(false);
                            }
-                        } else {
+                        }   
+                        else if(ae.getSource() == reload) {
+                                    txt_enrollID.setText(""+first4);
+                                    txt_tk.setText("");
+                                    ccourse.setText("");
+                                    studentid.setText("");
+                                    grade.setText("");
+                        }  
+                        else {
                                setVisible(false);
                         }
     }
