@@ -32,7 +32,7 @@ public class EnterMarks extends JFrame implements ActionListener {
     JTable tbMark,tbCourse,tbStudent;
     JComboBox cbsearch;
     JTextField grade;
-    JButton cancel, submit,btnadd,search,reload;
+    JButton cancel, submit,btnadd,search,reload,delete;
     
     
     Random ran = new Random();
@@ -260,6 +260,14 @@ public class EnterMarks extends JFrame implements ActionListener {
         btnadd.setFont(new Font("Tahoma", Font.BOLD, 15));
         add(btnadd);
         
+        delete = new JButton("Delete");
+        delete.setBounds(390, 350, 150, 25);
+        delete.setBackground(Color.BLACK);
+        delete.setForeground(Color.WHITE);
+        delete.addActionListener(this);
+        delete.setFont(new Font("Tahoma", Font.BOLD, 15));
+        add(delete);
+        
         search = new JButton("Search");
         search.setBounds(500, 300, 150, 25);
         search.setBackground(Color.BLACK);
@@ -337,6 +345,20 @@ public class EnterMarks extends JFrame implements ActionListener {
                                    setVisible(false);
                                }
                    }
+                        
+                        else if (ae.getSource() == delete) {
+                                    int i = tbMark.getSelectedRow();
+                                    String ID = tbMark.getValueAt(i, 0).toString();
+                                    int option = JOptionPane.showConfirmDialog(null, "Xác nhận điểm của sinh viên này");
+                                    if(option == JOptionPane.YES_OPTION) {
+                                                int check = bus.xoa(ID, i);
+                                                if(check ==1 ){
+                                                            JOptionPane.showMessageDialog(null, "Xóa thành công");
+                                                            setVisible(false);
+                                                }else   JOptionPane.showMessageDialog(null, "Xóa thất bại");
+                                                setVisible(false);
+                                    }else setVisible(false);
+                    }
                         else if(ae.getSource() == submit) {
                                int i = tbMark.getSelectedRow();
                                StudentGrade s = new StudentGrade();

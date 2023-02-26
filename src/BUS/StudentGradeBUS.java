@@ -32,6 +32,15 @@ public class StudentGradeBUS {
             list.set(i,sv);
         return check;
     }
+    
+    public int xoa(String id,int i) {
+            StudentGradeDAL data = new StudentGradeDAL();
+            int check = data.xoa(id);
+            if(check ==1 )
+                    list.remove(i);
+            return check;
+    }
+    
             public static ArrayList<StudentGrade> timkiem(String key, String query) {
                 ArrayList<StudentGrade> temp = new ArrayList<>();
                 StudentGradeDAL data = new StudentGradeDAL();

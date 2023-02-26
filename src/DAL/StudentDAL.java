@@ -80,4 +80,14 @@ public class StudentDAL {
         }
         return res;
     }
+    public int xoasv(String id) {
+        int res = 0;
+        try {
+                        String qry = "Delete from person where PersonID = '"+id+" ' ";
+                        res = my.executeUpdate(qry);
+        }catch(Exception e) {
+            JOptionPane.showMessageDialog(null,"Lỗi xóa Sinh viên trong Database");
+        }
+        return res;
+    }
 }

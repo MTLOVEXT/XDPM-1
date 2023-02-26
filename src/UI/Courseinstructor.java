@@ -48,7 +48,7 @@ public class Courseinstructor extends JFrame implements ActionListener{
             Vector header = new Vector();
             JButton reload;
             JTextField txtCourseID,txtPersonID;
-            JButton btnaddButton,btncancel,btnsubmit,btnsearch;
+            JButton btnaddButton,btncancel,btnsubmit,btnsearch,btnxoa;
             JTable tb_student,tbcourse,tbsearch;
             JComboBox cbsearch;
             JTextField txt_search;
@@ -241,10 +241,16 @@ public class Courseinstructor extends JFrame implements ActionListener{
         add(txt_search);
         
         reload = new JButton("Reload");
-        reload.setBounds(500, 150, 100, 50);
+        reload.setBounds(570, 80, 100, 50);
         reload.addActionListener(this);
         reload.setFont(new Font("serif", Font.BOLD, 20));
         add(reload);
+        
+        btnxoa = new JButton("Delete");
+        btnxoa.setBounds(570, 150, 100, 50);
+        btnxoa.addActionListener(this);
+        btnxoa.setFont(new Font("serif", Font.BOLD, 20));
+        add(btnxoa);
         
         btnaddButton = new JButton("Add");
         btnaddButton.setBounds(50, 230, 100, 50);
@@ -294,7 +300,7 @@ public class Courseinstructor extends JFrame implements ActionListener{
         loadsearch();
         
         JScrollPane jsp2 = new JScrollPane(tbsearch);
-        jsp2.setBounds(620, 5, 350, 280);
+        jsp2.setBounds(680, 5, 300, 280);
         jsp2.setFont(new Font("serif", Font.BOLD, 20));
         add(jsp2);
         //Lấy dữ liệu từ bảng lên form
@@ -349,6 +355,19 @@ public class Courseinstructor extends JFrame implements ActionListener{
                             }else{JOptionPane.showMessageDialog(null, "Mã đã tồn tại. Thêm thất bại");
                             setVisible(false);
                         }
+            }
+            else if (ae.getSource() == btnxoa) {
+                        int i = tbsearch.getSelectedRow();
+                        String ID = tbsearch.getValueAt(i, 0).toString();
+                        int option = JOptionPane.showConfirmDialog(null, "Xác nhận xóa khóa học này");
+                        if(option == JOptionPane.YES_OPTION) {
+                                    int check = buscourseinstructor.xoa(ID, i);
+                                    if(check ==1 ){
+                                                JOptionPane.showMessageDialog(null, "Xóa thành công");
+                                                setVisible(false);
+                                    }else   JOptionPane.showMessageDialog(null, "Xóa thất bại");
+                                    setVisible(false);
+                        }else setVisible(false);
             }
             //ý tưởng sửa lấy dữ liệu từ bảng lên form và sửa 
             else if(ae.getSource() == btnsubmit) {//Chỉ sửa được mã nhân viên trong bảng học sinh

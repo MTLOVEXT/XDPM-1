@@ -44,6 +44,14 @@ public class StudentBUS {
         }
         return find; 
     }    
+    
+    public int xoasv(String id,int i) {
+            StudentDAL data = new StudentDAL();
+            int check = data.xoasv(id);
+            if(check ==1 )
+                    list.remove(i);
+            return check;
+    }
      public static ArrayList<Student> timkiem(String key, String query) {
                 ArrayList<Student> temp = new ArrayList<>();
                 StudentDAL data = new StudentDAL();

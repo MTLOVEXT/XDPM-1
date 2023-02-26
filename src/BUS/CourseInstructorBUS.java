@@ -25,6 +25,13 @@ public class CourseInstructorBUS {
             list.add(ci);
         return check;
     }
+    public int xoa(String id,int i) {
+            CourseInstructorDAL data = new CourseInstructorDAL();
+            int check = data.xoa(id);
+            if(check ==1 )
+                    list.remove(i);
+            return check;
+    }
     public int suaCourseInstructor(CourseInstructor c,int i){
         CourseInstructorDAL data = new CourseInstructorDAL();
         int check = data.sua(c);

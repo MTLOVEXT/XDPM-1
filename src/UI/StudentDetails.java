@@ -22,7 +22,7 @@ public class StudentDetails extends JFrame implements ActionListener {
     JComboBox mssv;
     JTextField txtmssv;
     JTable table;
-    JButton search, print, update, add, cancel;
+    JButton search, print, update, add, cancel,xoa;
     
     private void load(){
         StudentBUS bus = new StudentBUS();       
@@ -111,6 +111,11 @@ public class StudentDetails extends JFrame implements ActionListener {
         cancel.addActionListener(this);
         add(cancel);
         
+        xoa = new JButton("Delete");
+        xoa.setBounds(520, 70, 80, 20);
+        xoa.addActionListener(this);
+        add(xoa);
+        
         setSize(900, 700);
         setLocation(300, 100);
         
@@ -144,7 +149,19 @@ public class StudentDetails extends JFrame implements ActionListener {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else if (ae.getSource() == add) {
+        } else if (ae.getSource() == xoa) {
+            int i = table.getSelectedRow();
+            String ID = table.getValueAt(i, 0).toString();
+            int option = JOptionPane.showConfirmDialog(null, "Xác nhận xóa sinh viên này");
+            if(option == JOptionPane.YES_OPTION) {
+                        int check = bus.xoasv(ID, i);
+                        if(check ==1 ){
+                                    JOptionPane.showMessageDialog(null, "Xóa thành công");
+                                    setVisible(false);
+                        }else   JOptionPane.showMessageDialog(null, "Xóa thất bại");
+                        setVisible(false);
+            }else setVisible(false);
+        }else if (ae.getSource() == add) {
             setVisible(false);
             new AddStudent();
         } else if (ae.getSource() == update) {

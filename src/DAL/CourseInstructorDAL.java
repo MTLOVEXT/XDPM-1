@@ -53,7 +53,7 @@ public class CourseInstructorDAL {
                 qry=qry+",'"+courseInstructor.getTeacherID()+"')";
                 res = my.executeUpdate(qry);
             }catch(Exception e){
-                JOptionPane.showMessageDialog(null,"Lỗi thêm thông tin giảng dạy vào Database");
+                JOptionPane.showMessageDialog(null,"Lỗi thêm thông tin học vào Database");
             }
         return res;
         }
@@ -67,7 +67,17 @@ public class CourseInstructorDAL {
             qry = qry +" where CourseID ='"+courseInstructor.getCourseID()+"'";
             res = my.executeUpdate(qry);
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null,"Lỗi sửa thông tin giảng dạy trong Database");
+            JOptionPane.showMessageDialog(null,"Lỗi sửa thông tin học trong Database");
+        }
+        return res;
+    }
+    public int xoa(String id) {
+        int res = 0;
+        try {
+                        String qry = "Delete from courseinstructor where CourseID = '"+id+" ' ";
+                        res = my.executeUpdate(qry);
+        }catch(Exception e) {
+            JOptionPane.showMessageDialog(null,"Lỗi xóa thông tin học trong Database");
         }
         return res;
     }

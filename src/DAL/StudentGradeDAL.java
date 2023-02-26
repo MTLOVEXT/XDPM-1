@@ -46,6 +46,17 @@ public class StudentGradeDAL {
     return true;        
     }
     
+    public int xoa(String id) {
+        int res = 0;
+        try {
+                        String qry = "Delete from studentgrade where EnrollmentID = '"+id+" ' ";
+                        res = my.executeUpdate(qry);
+        }catch(Exception e) {
+            JOptionPane.showMessageDialog(null,"Lỗi xóa điểm trong Database");
+        }
+        return res;
+    }
+    
     public int themGrade(StudentGrade sv){
         if(isValidtoAdd(sv)){
         int res = 0;
