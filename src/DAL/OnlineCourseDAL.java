@@ -63,7 +63,7 @@ public class OnlineCourseDAL {
         int res = 0;
         try{
             String qry = "update onlinecourse set ";
-            qry = qry + "url='"+onl.getUrl()+"',";
+            qry = qry + "url='"+onl.getUrl()+"'";
             qry = qry +" where CourseID ='"+onl.getCourseID()+"'";
             res = my.executeUpdate(qry);
         }catch(Exception e){

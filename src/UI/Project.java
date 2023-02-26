@@ -7,7 +7,7 @@ import java.awt.event.*;
 
 public class Project extends JFrame implements ActionListener {
 
-    Project() {
+        Project() {
         setSize(1500, 850);
         
         ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/bg.jpg"));

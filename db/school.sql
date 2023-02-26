@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th2 25, 2023 lúc 03:17 PM
+-- Thời gian đã tạo: Th2 26, 2023 lúc 04:31 AM
 -- Phiên bản máy phục vụ: 10.4.18-MariaDB
 -- Phiên bản PHP: 8.0.3
 
@@ -55,7 +55,7 @@ CREATE TABLE `course` (
 INSERT INTO `course` (`CourseID`, `Title`, `Credits`, `DepartmentID`) VALUES
 (1045, 'Calculus', 4, 7),
 (1050, 'Quantum physics', 4, 1),
-(1061, 'Educated', 4, 2),
+(1061, 'Trigonometry2', 4, 7),
 (2021, 'Analytics', 3, 7),
 (2030, 'Physics', 1, 7),
 (2042, 'Literature', 4, 2),
@@ -73,7 +73,7 @@ INSERT INTO `course` (`CourseID`, `Title`, `Credits`, `DepartmentID`) VALUES
 
 CREATE TABLE `courseinstructor` (
   `CourseID` int(11) NOT NULL,
-  `PersonID` int(11) NOT NULL
+  `PersonID` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -81,8 +81,10 @@ CREATE TABLE `courseinstructor` (
 --
 
 INSERT INTO `courseinstructor` (`CourseID`, `PersonID`) VALUES
-(1050, 306),
-(1045, 967);
+(1045, 3120410010),
+(1050, 3120410002),
+(1061, 3120410002),
+(4022, 3120410006);
 
 -- --------------------------------------------------------
 
@@ -194,13 +196,9 @@ CREATE TABLE `onlinecourse` (
 --
 
 INSERT INTO `onlinecourse` (`CourseID`, `url`) VALUES
-(1045, 'https://www.fineartschool.net/bd0c788f-6c5f-46dc-a018-d4f5e07f8a0b'),
-(1061, 'https://www.fineartschool.net/d587a502-d599-4465-b670-e3659681983c'),
-(2021, 'http://www.fineartschool.net/Composition'),
-(2030, 'http://www.fineartschool.net/Poetry'),
-(3141, 'http://www.fineartschool.net/Trigonometry'),
-(4041, 'http://www.fineartschool.net/Macroeconomics'),
-(4061, 'https://www.fineartschool.net/5a77d91f-b361-4aea-9359-987fb5994a77');
+(1045, 'http://www.fineartschool.net/Composition'),
+(1061, 'http://www.fineartschool.net/Poetry'),
+(2030, 'http://www.fineartschool.net/Macroeconomics');
 
 -- --------------------------------------------------------
 
@@ -220,7 +218,8 @@ CREATE TABLE `onsitecourse` (
 --
 
 INSERT INTO `onsitecourse` (`CourseID`, `Location`, `Days`, `Time`) VALUES
-(1045, 'HCM', 'T2,T4,T6', '1:00:00');
+(1045, 'VN', 'T2,T4,T6', '1:00:00'),
+(1050, 'HN', 'T2,T4,T6', '11:00:00');
 
 -- --------------------------------------------------------
 
@@ -241,19 +240,23 @@ CREATE TABLE `person` (
 --
 
 INSERT INTO `person` (`PersonID`, `Lastname`, `Firstname`, `HireDate`, `EnrollmentDate`) VALUES
-(3120410001, 'hhi', 'hi', '11 thg 2, 2023', '8 thg 2, 2023'),
-(3120410002, 'Barzdukas', 'Gytis', NULL, '8 thg 2, 2002'),
-(3120410003, 'Justice', 'Peggy', NULL, '8 thg 2, 1999'),
-(3120410004, 'hi', 'Fadi', '8 thg 2, 2023', NULL),
-(3120410005, 'Harui', 'Roger', '8 thg 2, 2023', NULL),
-(3120410006, 'Li', 'Yan', NULL, '8 thg 2, 2011'),
+(312041771, 'Jackie', 'Hung', '03/02/2023 00:00:00', '16/02/2023 00:00:00'),
+(312041863, 'Tomy', 'Like', '03/02/2023 00:00:00', '16/02/2023 00:00:00'),
+(3120410001, 'Test', 'Ts', '03/02/2023 00:00:00', '16/02/2023 00:00:00'),
+(3120410002, 'Barzdukas', 'Gytis', NULL, '10/02/2023 00:00:00'),
+(3120410003, 'Justice', 'Peggy', NULL, '10/02/2023 00:00:00'),
+(3120410004, 'hi', 'Fadi', '10/02/2023 00:00:00', NULL),
+(3120410005, 'Harui', 'Roger', '11/02/2023 00:00:00', '16/02/2023 00:00:00'),
+(3120410006, 'Li', 'Yan', NULL, '10/02/2023 00:00:00'),
 (3120410007, 'Norman', 'Laura', NULL, NULL),
 (3120410008, 'Olivotto', 'Nino', NULL, NULL),
 (3120410009, 'Tang', 'Wayne', NULL, NULL),
 (3120410010, 'Alonso', 'Meredith', NULL, NULL),
 (3120410011, 'Lopez', 'Sophia', NULL, NULL),
 (3120410012, 'Browning', 'Meredith', NULL, NULL),
-(3120410013, 'Anand', 'Arturo', NULL, NULL);
+(3120410013, 'Anand', 'Arturo', NULL, NULL),
+(3120414465, 'EFG', 'ABC', '10/02/2023 00:00:00', '10/02/2023 00:00:00'),
+(3120415833, 'Mike', 'Mike', '03/02/2023 00:00:00', '16/02/2023 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -274,7 +277,7 @@ CREATE TABLE `studentgrade` (
 
 INSERT INTO `studentgrade` (`EnrollmentID`, `CourseID`, `StudentID`, `Grade`) VALUES
 (1011, 1061, 3120410002, '1.00'),
-(1123, 1061, 3120410004, '2.00'),
+(1123, 1050, 3120410001, '2.00'),
 (1524, 2030, 3120410003, '2.00'),
 (6722, 1061, 3120410002, '5.00');
 
@@ -355,8 +358,7 @@ ALTER TABLE `course`
 -- Chỉ mục cho bảng `courseinstructor`
 --
 ALTER TABLE `courseinstructor`
-  ADD PRIMARY KEY (`CourseID`),
-  ADD KEY `fk_emp` (`PersonID`);
+  ADD PRIMARY KEY (`CourseID`);
 
 --
 -- Chỉ mục cho bảng `department`
@@ -435,12 +437,6 @@ ALTER TABLE `collegefee`
 --
 ALTER TABLE `course`
   ADD CONSTRAINT `fk_department` FOREIGN KEY (`DepartmentID`) REFERENCES `department` (`DepartmentID`);
-
---
--- Các ràng buộc cho bảng `courseinstructor`
---
-ALTER TABLE `courseinstructor`
-  ADD CONSTRAINT `fk_emp` FOREIGN KEY (`PersonID`) REFERENCES `teacher` (`empId`);
 
 --
 -- Các ràng buộc cho bảng `onlinecourse`

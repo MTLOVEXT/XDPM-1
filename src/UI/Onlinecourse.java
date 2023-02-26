@@ -33,7 +33,7 @@ public class Onlinecourse extends JFrame implements ActionListener{
     
             DefaultTableModel model = new DefaultTableModel();
             OnlineCourseBUS bus = new OnlineCourseBUS();
-            
+            DefaultTableModel modelc = new DefaultTableModel();
             CourseBUS busc = new CourseBUS();
             
             Vector header = new Vector();
@@ -95,7 +95,7 @@ public class Onlinecourse extends JFrame implements ActionListener{
                 header = new Vector();
                 header.add("Course ID");
                 header.add("Title");
-                    model = new DefaultTableModel(header,0){
+                    modelc = new DefaultTableModel(header,0){
                     public boolean isCellEditable(int row, int column)
                         {
                           return false;
@@ -105,12 +105,12 @@ public class Onlinecourse extends JFrame implements ActionListener{
             }
 
             private void showOnTablecourse(ArrayList<Course> list){
-                model.setRowCount(0);
+                modelc.setRowCount(0);
                 for(Course cs:list){
                    Vector data = setVectorcourse(cs);
-                   model.addRow(data);
+                   modelc.addRow(data);
                }
-               tableCourse.setModel(model);
+               tableCourse.setModel(modelc);
             }
 
             private Vector setVectorcourse(Course csCourse){
@@ -121,8 +121,8 @@ public class Onlinecourse extends JFrame implements ActionListener{
             }   
             
             public void setModelValuec(Course cs, int i) {
-                model.setValueAt(cs.getCourseID(), i, 0);
-                tableCourse.setModel(model);
+                modelc.setValueAt(cs.getCourseID(), i, 0);
+                tableCourse.setModel(modelc);
             }
             
             public void setModelValue(OnlineCourse cs, int i) {
