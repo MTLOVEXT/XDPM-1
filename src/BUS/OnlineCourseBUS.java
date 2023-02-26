@@ -25,6 +25,13 @@ public class OnlineCourseBUS {
             list.add(ci);
         return check;
     }
+    public int xoa(String id,int i) {
+            OnlineCourseDAL data = new OnlineCourseDAL();
+            int check = data.xoa(id);
+            if(check ==1 )
+                    list.remove(i);
+            return check;
+    }
     public int sua(OnlineCourse c,int i){
         OnlineCourseDAL data = new OnlineCourseDAL();
         int check = data.sua(c);

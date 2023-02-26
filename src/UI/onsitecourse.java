@@ -31,7 +31,7 @@ public class onsitecourse extends JFrame implements ActionListener{
             ArrayList<OnsiteCourse> tempsearch = new ArrayList<OnsiteCourse>();
             
             JTextField tfname,txtlocaltion,txttimer,txtcourseID,txtsearch; 
-            JButton btnaddButton,btncancel,btnsubmit,btnsearch;
+            JButton btnaddButton,btncancel,btnsubmit,btnsearch,delete;
             JTable tb_onsite,tb_course;
             JComboBox cbdays, cbsearch;
             
@@ -223,6 +223,12 @@ public class onsitecourse extends JFrame implements ActionListener{
         btncancel.setFont(new Font("serif", Font.BOLD, 20));
         add(btncancel);
         
+        delete = new JButton("Delete");
+        delete.setBounds(650, 280, 100, 50);
+        delete.addActionListener(this);
+        delete.setFont(new Font("serif", Font.BOLD, 20));
+        add(delete);
+        
         tb_onsite = new JTable();
         loadonsite();
         
@@ -286,6 +292,19 @@ public class onsitecourse extends JFrame implements ActionListener{
                                 }else{JOptionPane.showMessageDialog(null, "Thêm thất bại");
                                 setVisible(false);
                             }
+            }
+            else if (ae.getSource() == delete) {
+                        int i = tb_onsite.getSelectedRow();
+                        String ID = tb_onsite.getValueAt(i, 0).toString();
+                        int option = JOptionPane.showConfirmDialog(null, "Xác nhận xóa sinh viên này");
+                        if(option == JOptionPane.YES_OPTION) {
+                                    int check = busonsite.xoa(ID, i);
+                                    if(check ==1 ){
+                                                JOptionPane.showMessageDialog(null, "Xóa thành công");
+                                                setVisible(false);
+                                    }else   JOptionPane.showMessageDialog(null, "Xóa thất bại");
+                                                setVisible(false);
+                        }else setVisible(false);
             }
             else if(ae.getSource() == btnsubmit) {
                         int i = tb_onsite.getSelectedRow();

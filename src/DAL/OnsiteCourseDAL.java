@@ -33,6 +33,17 @@ public class OnsiteCourseDAL {
         return list;
     }
     
+    public int xoa(String id) {
+        int res = 0;
+        try {
+                        String qry = "Delete from onsitecourse where CourseID = '"+id+" ' ";
+                        res = my.executeUpdate(qry);
+        }catch(Exception e) {
+            JOptionPane.showMessageDialog(null,"Lỗi xóa địa điểm học trong Database");
+        }
+        return res;
+    }
+    
     public boolean isValidtoAdd(OnsiteCourse sgrade){
        try{
            ArrayList<OnsiteCourse> arr = doc();

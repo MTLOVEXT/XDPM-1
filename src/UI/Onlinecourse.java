@@ -39,7 +39,7 @@ public class Onlinecourse extends JFrame implements ActionListener{
             Vector header = new Vector();
     
             JTextField tfname,txturl,txtsearch,txtCourseID;
-            JButton btnaddButton,btncancel,btnsubmit,btnsearch,reload;
+            JButton btnaddButton,btncancel,btnsubmit,btnsearch,reload,delete;
             JTable tableOnl,tableCourse;
             JComboBox cbsearch;
             
@@ -205,6 +205,12 @@ public class Onlinecourse extends JFrame implements ActionListener{
         btncancel.setFont(new Font("serif", Font.BOLD, 20));
         add(btncancel);
         
+        delete = new JButton("Delete");
+        delete.setBounds(650, 230, 100, 50);
+        delete.addActionListener(this);
+        delete.setFont(new Font("serif", Font.BOLD, 20));
+        add(delete);
+        
         tableOnl = new JTable();
         
         load();
@@ -256,7 +262,21 @@ public class Onlinecourse extends JFrame implements ActionListener{
                       } else {
                           JOptionPane.showMessageDialog(null, "Không có kết quả phù hợp!");
                       }
-                      }else if (ae.getSource() == btnaddButton) {
+                      }
+                      else if (ae.getSource() == delete) {
+                                    int i = tableOnl.getSelectedRow();
+                                    String ID = tableOnl.getValueAt(i, 0).toString();
+                                    int option = JOptionPane.showConfirmDialog(null, "Xác nhận xóa sinh viên này");
+                                    if(option == JOptionPane.YES_OPTION) {
+                                                int check = bus.xoa(ID, i);
+                                                if(check ==1 ){
+                                                            JOptionPane.showMessageDialog(null, "Xóa thành công");
+                                                            setVisible(false);
+                                                }else   JOptionPane.showMessageDialog(null, "Xóa thất bại");
+                                                setVisible(false);
+                                    }else setVisible(false);
+                        }
+                        else if (ae.getSource() == btnaddButton) {
                                   OnlineCourse cs = new OnlineCourse();
                                   cs.setCourseID(txtCourseID.getText());
                                   cs.setUrl(txturl.getText());

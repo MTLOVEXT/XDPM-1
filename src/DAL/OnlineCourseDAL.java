@@ -30,6 +30,17 @@ public class OnlineCourseDAL {
         return list;
     }
     
+    public int xoa(String id) {
+        int res = 0;
+        try {
+                        String qry = "Delete from onlinecourse where CourseID = '"+id+" ' ";
+                        res = my.executeUpdate(qry);
+        }catch(Exception e) {
+            JOptionPane.showMessageDialog(null,"Lỗi xóa khóa học trong Database");
+        }
+        return res;
+    }
+    
     public boolean isValidtoAdd(OnlineCourse courseInstructor){
        try{
            ArrayList<OnlineCourse> arr = doc();

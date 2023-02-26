@@ -25,6 +25,13 @@ public class OnsiteCourseBUS {
             list.add(sv);
         return check;
     }
+    public int xoa(String id,int i) {
+            OnsiteCourseDAL data = new OnsiteCourseDAL();
+            int check = data.xoa(id);
+            if(check ==1 )
+                    list.remove(i);
+            return check;
+    }
     public int sua(OnsiteCourse sv,int i){
         OnsiteCourseDAL data = new OnsiteCourseDAL();
         int check = data.sua(sv);
