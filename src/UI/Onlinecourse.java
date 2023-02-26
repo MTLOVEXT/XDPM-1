@@ -266,7 +266,7 @@ public class Onlinecourse extends JFrame implements ActionListener{
                       else if (ae.getSource() == delete) {
                                     int i = tableOnl.getSelectedRow();
                                     String ID = tableOnl.getValueAt(i, 0).toString();
-                                    int option = JOptionPane.showConfirmDialog(null, "Xác nhận xóa sinh viên này");
+                                    int option = JOptionPane.showConfirmDialog(null, "Xác nhận xóa khóa học này");
                                     if(option == JOptionPane.YES_OPTION) {
                                                 int check = bus.xoa(ID, i);
                                                 if(check ==1 ){

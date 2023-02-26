@@ -20,6 +20,14 @@ public class CourseBUS {
         return list;
     }
     
+    public int xoa(String id,int i) {
+            CourseDAL data = new CourseDAL();
+            int check = data.xoa(id);
+            if(check ==1 )
+                    list.remove(i);
+            return check;
+    }
+    
     public ArrayList<Course> docID(){
         CourseDAL data = new CourseDAL();
         try{

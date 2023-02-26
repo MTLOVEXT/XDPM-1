@@ -315,7 +315,7 @@ public class onsitecourse extends JFrame implements ActionListener{
             else if (ae.getSource() == delete) {
                         int i = tb_onsite.getSelectedRow();
                         String ID = tb_onsite.getValueAt(i, 0).toString();
-                        int option = JOptionPane.showConfirmDialog(null, "Xác nhận xóa sinh viên này");
+                        int option = JOptionPane.showConfirmDialog(null, "Xác nhận xóa khóa học này");
                         if(option == JOptionPane.YES_OPTION) {
                                     int check = busonsite.xoa(ID, i);
                                     if(check ==1 ){

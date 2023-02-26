@@ -32,7 +32,7 @@ public class Management_Course extends JFrame implements ActionListener{
 
             JLabel lblcourseID,lblTitlle,lblCredits,lblDepartment;
             JTextField txt_courseid,txt_Title,txt_credits,txt_departmentid,txt_tk;
-            Button add,edit,cancel,search,reload;
+            Button add,edit,cancel,search,reload,delete;
             JTable tb_course,tb_depart;
             JComboBox cbsearch;
 
@@ -226,6 +226,12 @@ public class Management_Course extends JFrame implements ActionListener{
                         edit.setFont(new Font("serif", Font.BOLD, 30));
                         add(edit);
                         
+                        delete = new Button("Delete");
+                        delete.setBounds(1000, 100, 150, 50);
+                        delete.addActionListener(this);
+                        delete.setFont(new Font("serif", Font.BOLD, 30));
+                        add(delete);
+                        
                         reload = new Button("Reload");
                         reload.setBounds(1000, 170, 150, 50);
                         reload.addActionListener(this);
@@ -296,7 +302,21 @@ public class Management_Course extends JFrame implements ActionListener{
                    } else {
                        JOptionPane.showMessageDialog(null, "Không có kết quả phù hợp!");
                    }
-                   }else if (ae.getSource() == add) {
+                   }
+                    else if (ae.getSource() == delete) {
+                            int i = tb_course.getSelectedRow();
+                            String ID = tb_course.getValueAt(i, 0).toString();
+                            int option = JOptionPane.showConfirmDialog(null, "Xác nhận xóa môn học này");
+                            if(option == JOptionPane.YES_OPTION) {
+                                        int check = bus.xoa(ID, i);
+                                        if(check ==1 ){
+                                                    JOptionPane.showMessageDialog(null, "Xóa thành công");
+                                                    setVisible(false);
+                                        }else   JOptionPane.showMessageDialog(null, "Xóa thất bại");
+                                        setVisible(false);
+                            }else setVisible(false);
+                        }
+                else if (ae.getSource() == add) {
                                Course cs = new Course();
                                cs.setCourseID(txt_courseid.getText());
                                cs.setTitle(txt_Title.getText());

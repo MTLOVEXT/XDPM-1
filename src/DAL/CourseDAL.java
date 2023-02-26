@@ -32,6 +32,17 @@ public class CourseDAL {
         return list;
     }
     
+    public int xoa(String id) {
+        int res = 0;
+        try {
+                        String qry = "Delete from course where CourseID = '"+id+" ' ";
+                        res = my.executeUpdate(qry);
+        }catch(Exception e) {
+            JOptionPane.showMessageDialog(null,"Lỗi xóa môn học trong Database");
+        }
+        return res;
+    }
+    
     public ArrayList<Course> docID() throws Exception{
         ArrayList<Course> list = new ArrayList<Course>();
         try{
